@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, ImageBackground } from 'react-native';
+// import RNFS from 'react-native-fs';
 
 import Title from "./src/components/Title/title.js";
 import Arquivo from "./src/components/Arquivo/arquivo";
