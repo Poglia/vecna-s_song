@@ -18,23 +18,55 @@ export default function Arquivo(){
         let contentString = await FileSystem.readAsStringAsync(result.uri);
         let contentObject = JSON.parse(contentString)
 
+        // SEPARAR ARQUIVO
 
-        console.log(typeof(contentObject))
-        for (let i =0; i< 10; i++)
-        {
-          console.log(contentObject[i])
-        }
+        // 49, 98, 89,31, 15,79,99,38,6,40,72,65,97,
+
+        // let arquivos = [];
+        let stringNotas = "";
+        const fileNumber = 49;
+        var strFileSeparate = '[';
+        let sizeObj = Object.keys(contentObject).length
+
+      let lastLetter = "";
+      for (let i = 0; i < sizeObj; i++){
+          if(contentObject[i].arq == fileNumber)
+          {
+            strFileSeparate += '{'
+            strFileSeparate += '"ordem":' + contentObject[i].ordem + ","
+
+            // verificar \ no ultimo caracter 
+            lastLetter = contentObject[i].notas.slice(-1)
+            
+            if (lastLetter == "\\")
+            {
+              contentObject[i].notas += "\\"
+            }
+
+            strFileSeparate += '"notas":"' + contentObject[i].notas + '"'
+            strFileSeparate += '},'
+          }
+          
       }
 
-        // readFile = async (MyPath) => {
-        //     try {
-        //       const path =MyPath+ "/rn.txt";
-        //       const contents = await RNFS.readFile(path, "utf8");
-        //       return("" + contents);
-        //     } catch (e) {
-        //       alert("" + e);
-        //     }
-        //   };
+      strFileSeparate = strFileSeparate.substring(0, strFileSeparate.length - 1);
+      strFileSeparate += ']';
+
+      var objFileSeparate = JSON.parse(strFileSeparate)
+
+      objFileSeparate.sort(function(a, b){
+        if (a.ordem < b.ordem)
+        {
+          return -1
+        }
+        
+        return true
+      })
+
+      console.log(objFileSeparate)
+
+     }
+
 
     return(
         <TouchableOpacity style={styles.boxArquivo}
