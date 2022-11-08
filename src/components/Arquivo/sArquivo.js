@@ -8,10 +8,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         // backgroundColor: 'blue'
     },
+
+    view: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     textTitle: {
         fontSize: 24,
         color: '#ca7e78',
         fontWeight: 'bold'
+
+    },
+    textTitleElse: {
+        fontSize: 30,
+        color: '#ca7e78',
+        fontWeight: 'bold',
+        marginVertical: 50
 
     },
     buttonUpload: {
