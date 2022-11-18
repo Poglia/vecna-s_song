@@ -1,14 +1,17 @@
 import {useState, useCallback } from 'react';
-import {View, Text, TouchableOpacity, Button} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import styles from './sArquivo';
 
 import * as DocumentPicker from 'expo-document-picker';
 import { FontAwesome } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import * as Linking from 'expo-linking';
+
 // import * as Permissions from 'expo-permissions';
 // import * as Locations from 'expo-location';
 // import { Camera } from 'expo-camera';
+// import * as RNFetchBlob from 'rn-fetch-blob';
 
 
 
@@ -20,17 +23,30 @@ export default function Arquivo(){
       setGrades(null)
     }
 
-    const salvarArquivo = async () => {
-      let { status } = await MediaLibrary.createAssetAsync();
-      if (status !== 'granted') {
-          let fileUri = FileSystem.documentDirectory + "text.txt";
-          await FileSystem.writeAsStringAsync(fileUri, grades, { encoding: FileSystem.EncodingType.UTF8 });
-          const asset = await MediaLibrary.createAssetAsync(fileUri)
-          await MediaLibrary.createAlbumAsync("teste", asset, false)
-          console.log("FEITO")
-      }
-    }
+    const donwloadFile = async () => {
+      const fileUri = FileSystem.documentDirectory + 'teste/teste.pdf';
+      const url = "https://www.soundczech.cz/temp/lorem-ipsum.pdf";
     
+      let downloadObject = FileSystem.createDownloadResumable(
+        url,
+        fileUri
+      );
+      let response = await downloadObject.downloadAsync();
+      console.log(response)
+    }
+
+    const salvarArquivo = async () => {
+      let fsdd = FileSystem.documentDirectory + 'teste.txt'
+     await FileSystem.writeAsStringAsync(fsdd, 'Teste primeiro', 
+      {encoding: FileSystem.EncodingType.UTF8}).then(() => {
+      }).catch((err) => {
+        console.log("CATCH")
+        console.log(err.message)
+
+
+      })
+      
+    }
 
     const abrirBuscaArquivo = async () => {
         let result = await DocumentPicker.getDocumentAsync({
@@ -88,6 +104,7 @@ export default function Arquivo(){
       }
 
       setGrades(strNotas)
+      // console.log({grades})
 
      }
 
@@ -108,8 +125,8 @@ export default function Arquivo(){
           <TouchableOpacity>
               <Text style={styles.textTitleElse}
                onPress={() => {
-                salvarArquivo()
-              }}>Dowload Arquivo</Text>
+                donwloadFile()
+              }}>Exportar Arquivo</Text>
           </TouchableOpacity>   
           <TouchableOpacity>
               <Text style={styles.textTitleElse}
